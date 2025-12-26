@@ -2,9 +2,9 @@
   "name": "saas-boilerplate",
   "private": true,
   "workspaces": [
-    "backend/auth-service",
-    "backend/api-gateway",
-    "backend/logger"
+    "auth-service",
+    "api-gateway",
+    "logger"
   ],
   "scripts": {
     "install:all": "yarn install",

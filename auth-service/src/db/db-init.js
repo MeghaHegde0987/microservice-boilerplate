@@ -1,7 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const { User, Tenant } = require("./schema-model");
-const createLogger = require("../../logger/logger"); // adjust path
+const createLogger = require("../../../logger/logger");
 const logger = createLogger("auth-service"); // same service name
 
 const mongoUri =

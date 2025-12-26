@@ -1,7 +1,7 @@
+# docker-compose.yml
 services:
   mongo:
     image: mongo:7.0
-    container_name: auth_mongo
     ports:
       - "27017:27017"
     environment:
@@ -11,28 +11,31 @@ services:
       - ./data/mongo:/data/db
 
   auth-service:
-    build: ./auth-service
-    container_name: auth_app
+    build:
+      context: .         # root as build context
+      dockerfile: auth-service/Dockerfile
+    environment:
+      - NODE_PATH=/app
     ports:
       - "5001:5001"
     env_file:
-      - ./auth-service/.env
+      - auth-service/.env
     depends_on:
       - mongo
 
   api-gateway:
-    build: ./api-gateway
-    container_name: api_gateway
+    build:
+      context: .         # root as build context
+      dockerfile: api-gateway/Dockerfile
     ports:
       - "4000:4000"
     env_file:
-      - ./api-gateway/.env
+      - api-gateway/.env
     depends_on:
       - auth-service
 
   loki:
     image: grafana/loki:2.9.2
-    container_name: loki
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/loki-config.yml
@@ -41,7 +44,6 @@ services:
 
   grafana:
     image: grafana/grafana:10.2.2
-    container_name: grafana
     ports:
       - "3000:3000"
     environment:
@@ -52,7 +54,6 @@ services:
 
   promtail:
     image: grafana/promtail:2.9.2
-    container_name: promtail
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/containers:/var/lib/docker/containers:ro

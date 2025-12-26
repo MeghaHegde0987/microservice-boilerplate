@@ -1,0 +1,19 @@
+FROM node:20-alpine
+WORKDIR /app
+
+# 1. Copy monorepo root configs
+COPY package.json yarn.lock* ./
+
+# 2. Copy the shared logger folder
+COPY logger/ ./logger/
+
+# 3. Copy the auth-service folder
+COPY auth-service/ ./auth-service/
+
+# 4. Install dependencies from the root
+# This creates the link for @shared/logger inside the container
+RUN yarn install
+
+# 5. Set working directory to the service and run
+WORKDIR /app/auth-service
+CMD ["node", "src/server.js"]

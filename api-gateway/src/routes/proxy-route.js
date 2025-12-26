@@ -1,10 +1,13 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = (app) => {
+  // Use environment variable for the target service
+  const authServiceUrl = process.env.AUTH_SERVICE_URL || "http://auth-service:5001";
+
   app.use(
     "/",
     createProxyMiddleware({
-       target: 'http://auth_app:5001', 
+      target: authServiceUrl,
       changeOrigin: true,
       pathRewrite: { "^/": "/" },
       onProxyReq(proxyReq, req, res) {

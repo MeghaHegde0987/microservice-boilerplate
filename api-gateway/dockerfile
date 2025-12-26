@@ -1,0 +1,16 @@
+# api-gateway/Dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY api-gateway/package*.json ./
+RUN npm install
+
+COPY api-gateway/src ./src
+
+# Copy root-level logger (if needed)
+COPY logger ./logger
+
+EXPOSE 4000
+
+CMD ["node", "src/server.js"]

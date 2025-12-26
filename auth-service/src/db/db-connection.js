@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const createLogger = require("../../logger/logger"); // path may vary
-const logger = createLogger("auth-service");
+const logger = require("../utils/logger");
 
 const mongoUri =
   process.env.MONGO_URI || "mongodb://localhost:27017/auth_service";
