@@ -10,8 +10,8 @@ const createServiceLogger = (serviceName) => {
     defaultMeta: { service: serviceName },
     format: format.combine(
       format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-      format.errors({ stack: true }), // Capture stack traces
-      format.json() // Structured JSON logs for Loki
+      format.errors({ stack: true }), 
+      format.json() 
     ),
     transports: [
       new transports.Console() // Console transport is captured by Docker → Loki

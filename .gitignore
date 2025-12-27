@@ -8,4 +8,5 @@
 .vscode/
 
 data/
+loki-data/
 *.log

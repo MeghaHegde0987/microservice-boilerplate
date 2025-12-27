@@ -1,4 +1,5 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
+const logger = require("../utils/logger");
 
 module.exports = (app) => {
   // Use environment variable for the target service
@@ -19,7 +20,7 @@ module.exports = (app) => {
         }
       },
       onError(err, req, res) {
-        console.error("Proxy error:", err);
+        logger.error("Proxy error:", err);
         res.status(500).send("Proxy error");
       },
     })

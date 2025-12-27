@@ -1,3 +1,5 @@
+const logger = require("../utils/logger");
+
 const refreshController = (req, res) => {
   const token = req.cookies.refreshToken;
   if (!token) return res.status(401).json({ message: "No refresh token" });
@@ -19,7 +21,7 @@ const refreshController = (req, res) => {
 
     res.json({ message: "Access token refreshed" });
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(401).json({ message: "Invalid or expired refresh token" });
   }
 };

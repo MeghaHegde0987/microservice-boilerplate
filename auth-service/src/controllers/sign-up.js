@@ -1,5 +1,6 @@
 const { User } = require("../db/schema-model");
 const bcrypt = require("bcrypt");
+const logger = require("../utils/logger");
 
 const signupController = async (req, res) => {
   try {
@@ -28,7 +29,7 @@ const signupController = async (req, res) => {
       userId: user._id,
     });
   } catch (error) {
-    console.error("Signup error:", error);
+    logger.error("Signup error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
