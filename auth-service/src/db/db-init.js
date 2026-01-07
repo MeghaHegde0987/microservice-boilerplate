@@ -1,15 +1,12 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const { User, Tenant } = require("./schema-model");
-const createLogger = require("../../../logger/logger");
-const logger = createLogger("auth-service"); // same service name
+const logger = require("../utils/logger");
 
-const mongoUri =
-  process.env.MONGO_URI || "mongodb://localhost:27017/auth_service";
 
 async function initDB() {
   try {
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(process.env.MONGO_URI);
     logger.info("MongoDB connected (init)");
 
     const defaultTenant = await Tenant.findOne({ name: "Default Tenant" });

@@ -1,16 +1,14 @@
-version: "3.9"
-
 services:
   mongo:
     image: mongo:7.0
-    ports:
-      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpass
-      MONGO_INITDB_DATABASE: authdb
+      # REMOVE MONGO_INITDB_DATABASE line
     volumes:
       - mongo-data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+
 
   auth-service:
     build:
@@ -22,6 +20,19 @@ services:
       - "5001:5001"
     env_file:
       - auth-service/.env
+    depends_on:
+      - mongo
+
+  user-service:
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    environment:
+      - NODE_PATH=/app
+    ports:
+      - "5002:5002"
+    env_file:
+      - user-service/.env
     depends_on:
       - mongo
 

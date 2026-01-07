@@ -1,8 +1,8 @@
 const express = require("express");
-const signupController = require("../controllers/sign-up.js");
-const signinController = require("../controllers/sign-in.js");
-const refreshController = require("../controllers/refresh-token.js");
-const logoutController = require("../controllers/logout.js");
+const signupController = require("../controllers/sign-up-controller.js");
+const signinController = require("../controllers/sign-in-controller.js");
+const refreshController = require("../controllers/refresh-token-controller.js");
+const logoutController = require("../controllers/logout-controller.js");
 
 const router = express.Router();
 

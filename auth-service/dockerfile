@@ -1,21 +1,26 @@
+# Use a modern, stable Node 20 or 22 image for 2026
 FROM node:20-alpine
+
+# Set the working directory to the root of the image
 WORKDIR /app
 
-# 1. Copy the shared logger folder
-# This makes it available at /app/logger
+# 1. Copy the shared dependency folder
+# This must exist at /app/logger so that /app/auth-service can see it at ../logger
 COPY logger ./logger
 
-# 2. Copy the auth-service folder
-# This makes it available at /app/auth-service
-COPY auth-service ./auth-service
+# 2. Copy the auth-service package files
+COPY auth-service/package*.json ./auth-service/
 
-# 3. Change to the service directory
+# 3. Switch to the service folder to install
 WORKDIR /app/auth-service
 
-# 4. Install dependencies specifically for this service
-# This correctly resolves "@shared/logger": "file:../logger" 
-# because ../logger now exists at /app/logger
-RUN yarn install
+# 4. Use --install-links to physically copy the logger files instead of symlinking
+RUN npm install --install-links
+
+# 5. Copy the rest of the auth-service source code
+COPY auth-service/ .
 
 EXPOSE 5001
+
+# Start the application
 CMD ["node", "src/server.js"]

@@ -1,0 +1,23 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# 1. Copy the shared logger first
+COPY logger ./logger
+
+# 2. Copy the package files
+COPY user-service/package*.json ./user-service/
+
+# 3. Copy the REST of the source code NOW (before install)
+COPY user-service/ ./user-service/
+
+# 4. Switch to the service folder
+WORKDIR /app/user-service
+
+# 5. Install dependencies
+# --install-links ensures the local 'logger' dependency is handled correctly
+RUN npm install --install-links
+
+EXPOSE 5002
+
+CMD ["node", "src/server.js"]

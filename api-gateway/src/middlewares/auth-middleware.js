@@ -10,9 +10,12 @@ module.exports = function authMiddleware(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, JWT_ACCESS_SECRET);
-    req.user = decoded; 
+    req.headers["x-user-id"] = decoded.userId;
+    req.headers["x-user-roles"] = decoded.roles?.join(",") || "";
+
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
+
